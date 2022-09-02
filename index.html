@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Game batu-gunting-kertas</title>
+	<link rel="stylesheet" href="styling.css">
+</head>
+<body>
+	<div class="game-over" id="gameOver">
+		<h1>Permainan Selesai</h1>
+		<h1 id="pemenang"></h1>
+		<h2 id="scoreAkhir"></h2>
+		<img id="foto" src="">
+		<button class="ulang" onclick="ulangi()">Ulang Permainan</button>	
+	</div>
+	<div id="app">
+		<button onclick="playSound()">Nyalakan Musik</button>
+		<div class="konten">
+			<h2 id="score">Score 0:0</h2>
+			😊😀😭
+			<h2>Game Batu Gunting Kertas</h2>
+			<h1>Hasil Permainan</h1>
+		</br>
+			<h3 id="tampilNama">Player VS KANS-bot</h3>
+			<h1 id="tampilPilihan">..VS..</h1>
+			<h3 id="hasilPermainan">Hasil</h3>
+		</div>
+
+		<div class="games">
+			<!-- memanggil fungsi ambilPilihan pada tombil diklik -->
+			<div class="opsi batu" onclick="ambilPilihan('✊')">
+			     <span>Batu</span> ✊
+			</div>
+			<div class="opsi kertas" onclick="ambilPilihan('👋')">
+			     <span>Kertas</span> 👋
+			</div>
+			<div class="opsi gunting" onclick="ambilPilihan('✌')">
+			     <span>Gunting</span> ✌
+			</div>
+		</div>
+	</div>
+<div>
+	<audio src="sound/click.wav" type='audio/wav' id="clickSound"></audio>
+	<audio src="sound/bgm.mp3" type='audio/mpeg' id="bgm"></audio>
+	<script>
+
+
+		let bgm = document.getElementById('bgm');
+		function playSound(){
+			bgm.play();
+			bgm.volume = 0.6;
+		}
+
+
+		// tulis kode JS disini
+		// mangambil nama prompt yang di masukkan pemain
+		alert('Selamat Bermain Game Ayang!');
+		let namaKamu = prompt('Masukkan Nama Kamu:');
+		// menandai tempat dimana nama akan ditampilkan
+		let tampilNama = document.getElementById('tampilNama');
+		// mengganti isinya dengan menampilkan nama pemain dan nama bot
+		tampilNama.textContent = `${namaKamu} VS KANS-bot`;
+		// menandai tempat dimana permainan akan ditampilkan
+		let tampilPilihan = document.getElementById('tampilPilihan');
+
+		
+
+		class Start {
+			// menetapkan data yang akan diolah
+			constructor(){
+				this.pilihanBot = '';
+				this.pilihanPemain = '';
+				//...... kode update
+				this.scoreBot = 0;
+				this.scorePemain = 0;
+				this.foto = '';
+				//...... kode update
+			}
+
+			// membuat method untuk otak-bot
+			otakBot() {
+				const opsi = ["👋","✌","✊"];
+				const pilihanBot = Math.floor(Math.random() * opsi.length);
+
+				this.pilihanBot = opsi[pilihanBot];
+
+				return opsi[pilihanBot];
+			}
+
+			// disini lanjut kode
+			// membuat method untuk menentukan pemenang
+			hasilPemenang(){
+				const pemain = this.pilihanPemain;
+				const bot = this.pilihanBot;
+
+				if (pemain === "👋" && bot === "👋"){
+					return ('Seri 😊');
+				}
+				if (pemain === "✌" && bot === "✌"){
+					return ('Seri 😊');
+				}
+				if (pemain === "✊" && bot === "✊"){
+					return ('Seri 😊');
+				}
+
+				if (pemain === "👋" && bot === "✌"){
+					this.scoreBot++;
+					return ('Kalah 😭');
+				}
+				if (pemain === "👋" && bot === "✊"){
+					this.scorePemain++;
+					return ('Menang 😀');
+				}
+				if (pemain === "✌" && bot === "👋"){
+					this.scorePemain++;
+					return ('Menang 😀');
+				}
+				if (pemain === "✌" && bot === "✊"){
+					this.scoreBot++;
+					return ('Kalah 😭');
+				}
+				if (pemain === "✊" && bot === "👋"){
+					this.scoreBot++
+					return ('Kalah 😭');
+				}
+				if (pemain === "✊" && bot === "✌")	{
+					this.scorePemain++
+					return ('Menang 😀');
+				}
+			}
+
+			hasilAkhir(){
+
+				if (this.scorePemain > this.scoreBot) {
+					this.foto = 'foto/dance.gif';
+					return 'your winner 😀';
+				} else {
+					this.foto = 'foto/crying.gif';
+					return 'your loser 😭';
+				}
+			}
+		}
+
+		// tambah kode ini setelah tutup class start ( } ).
+		let mulaiGame = new Start;
+
+
+		// membuat fungsi untuk mendapatkan  pilihan pemain
+		// dan menjalankan permainan
+		function ambilPilihan(pilihanPemain) {
+			// .............
+			// let mulaiGame = new Start;
+			// ambil sumber audio
+			let clickSound = document.getElementById('clickSound');
+			// putar saar di klik
+			clickSound.play();
+			//................
+
+			mulaiGame.otakBot();
+			mulaiGame.pilihanPemain = pilihanPemain;
+
+		   // menngganti isi element tampilPilihan denga string baru
+		   tampilPilihan.textContent = `${pilihanPemain} VS ${mulaiGame.pilihanBot}`;
+
+		   // menandai tempat dimana hasil permainan akan ditampilkan
+		   let tampilHasil = document.getElementById('hasilPermainan');
+
+		   // mengganti isinya dengan string baru 
+		   tampilHasil.textContent = `Hasil: ${mulaiGame.hasilPemenang()}`;
+		   //...................update code
+		   document.getElementById('score').textContent =`Score ${mulaiGame.scorePemain}:${mulaiGame.scoreBot}`;
+
+		   let gameOver = document.getElementById('gameOver');
+		   let pemenang = document.getElementById('pemenang');
+
+		   if (mulaiGame.scorePemain === 5 || mulaiGame.scoreBot === 5) {
+			   gameOver.style.display = 'flex';
+			   pemenang.textContent = mulaiGame.hasilAkhir();
+			   document.getElementById('foto').src = mulaiGame.foto;
+			   document.getElementById('scoreAkhir').textContent = `Score Akhir ${mulaiGame.scorePemain}:${mulaiGame.scoreBot}`;
+			
+			}
+			//........................update code
+		}
+		function ulangi(){
+			// reset score bot ke 0
+			mulaiGame.scoreBot = 0;
+			// reset score pemain ke 0
+			mulaiGame.scorePemain = 0;
+
+			// menyembunyikan tampilan game over
+			gameOver.style.display = 'none';
+			// reset nama pemain
+            tampilPilihan.textContent = '..VS..';
+
+			// reset tampilkan score
+			document.getElementById('score').textContent = `Score 0:0`;
+			// reset tampilkan hasil permainan
+			document.getElementById('hasilPermainan').textContent = '';
+		}
+	</script>
+</body>
+</html>
